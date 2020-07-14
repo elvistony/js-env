@@ -60,9 +60,6 @@ body,h1 {font-family: "Raleway", Arial, sans-serif}
 
 </div></div>
 
-
-<script src="w3codecolor.js"></script>
-
 <script>
 
   function RunJS() {
@@ -86,7 +83,7 @@ body,h1 {font-family: "Raleway", Arial, sans-serif}
     document.body.removeChild(element);
   }
   }
-w3CodeColor();
+
 
 function DarkMode(){
   document.getElementById('footer').classList.toggle('darkBar');
@@ -122,8 +119,7 @@ function LoadCode(){
 </html>`;
 }
 
-LoadCode();
-RunJS();
+
 
 function ShareOutput(){
   alert("Select 'Save as PDF' download Output")
@@ -145,6 +141,10 @@ function ShowDropper(mode,ele) {
 window.onbeforeunload = function(event) {
     event.returnValue = "Your current file will be Lost on Reload, Continue?";
 };
+window.onload = function(){
+  LoadCode();
+  RunJS();
+}
 </script>
 
 
