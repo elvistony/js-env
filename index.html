@@ -1,156 +1,60 @@
 <html>
 <title>RW-Lab - JS Environment</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="Keywords" content="HTML,CSS,JavaScript,jQuery,Web development,demo">
-<meta name="Description" content="RW-Lab is a simple HTML|JS|CSS Environment to tinker with code. It works offline using your own Processing Power.">
+<meta name="keywords" content="HTML,CSS,JavaScript,jQuery,Web development,demo">
+<meta name="description" content="RW-Lab is a simple HTML|JS|CSS Environment to tinker with code. It works offline using your own Processing Power.">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="css/playground-rw.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<style>
-body,h1 {font-family: "Raleway", Arial, sans-serif}
-.dark{
-    background-color:darkslategray;
-    color:white;
-}
-.darkBar{
-  background-color:darkslategray;
-  opacity:1;
-}
-
-.darkInput{
-  background-color:#0f1b1b;
-  color:white;
-}
-
-.darkOutput{
-  background-color:#0f1b1b;
-}
-
-</style>
-
 <body>
+
 <header class="w3-panel">
   <div class="">
     <div class="w3-border w3-block">
       <div class="w3-dropdown-hover">
         <button class="w3-button w3-white w3-hover-blue">File</button>
         <div id="file_menu" class="w3-dropdown-content w3-bar-block w3-border w3-small">
-          <button class="w3-bar-item w3-button">Open</button>
-          <button class="w3-bar-item w3-button">Save as PDF</button>
+          <button class="w3-bar-item w3-button w3-gray">Open</button>
+          <button class="w3-bar-item w3-button" onclick="ShareOutput()">Save Output as PDF</button>
           <button class="w3-bar-item w3-button" onclick="DownloadCode()" >Download Code File</button>
         </div>
       </div>
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-white w3-hover-blue">View</button>
+        <div id="file_menu" class="w3-dropdown-content w3-bar-block w3-border w3-small">
+          <button class="w3-bar-item w3-button w3-gray">Line Numbers</button>
+          <button class="w3-bar-item w3-button" onclick="changeOrientation(this)">Side-by-Side</button>
+          <button class=" w3-bar-item  w3-button w3-lightgray" onclick="DarkMode()">DarkMode</button>
+          <button class=" w3-bar-item w3-button w3-small" onclick="openFullscreen(this)">Distraction-free mode</button>
+        </div>
+      </div>
       <button class="w3-button w3-green" onclick="RunJS()">Run</button>
-      <button class="w3-button w3-lightgray" onclick="DarkMode()">DarkMode</button>
-      <span class="w3-button w3-right">RW-Lab</span>
+      <span class="w3-button w3-right w3-hover-white">RW <span class="w3-small">Playground</span></span>
     </div>
   </div>
 </header>
 
 <div class="w3-content" style="max-width:1500px">
-<!-- Header -->
-<div class="w3-row-padding" style="">
-    <div class="w3-half w3-display-container">
-      <span class=" w3-center w3-button w3-hover-white w3-small w3-text-lightgray">Code Editor</span>
-      <span class=" w3-right w3-small w3-text-lightgray w3-button w3-hover-orange  w3-opacity w3-round-xlarge" onclick="copyText(this)">Copy Text</span>
-      <textarea class="w3-round-large w3-padding w3-code jsHigh" onchange="w3CodeColor()" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}" id="htmldata" rows="20" style="box-sizing:border-box;height:400px;font-family:monospace;width:100%;margin: 0px !important;border-left: 1px solid !important;"></textarea>
-    </div>
-    <span class="w3-small w3-text-lightgray w3-button w3-hover-white" id="outputTitle">Output</span>
-    <span class=" w3-right w3-small w3-text-lightgray w3-button w3-hover-orange w3-opacity w3-round-xlarge" onclick="ShareOutput()">Save/Share</span>
-    <iframe name="printf" class="w3-half w3-border w3-round-large" style="height:400px;resize:auto;" id="output"></iframe>
+  <div class="w3-row-padding" style="">
+      <div class="w3-half" id="inputDiv">
+        <span class=" w3-center w3-button w3-hover-white w3-small w3-text-lightgray">Code Editor</span>
+        <span class=" w3-right w3-small w3-text-lightgray w3-button w3-hover-orange  w3-opacity w3-round-xlarge" onclick="copyText(this)">Copy Text</span>
+        <textarea class="w3-round-large w3-padding w3-block" onkeyup="Reflect()" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}" id="htmldata" rows="20" style="box-sizing:border-box;height:400px;font-family:monospace;width:100%;border-left: 1px solid !important;"></textarea>
+      </div>
+      <div class="w3-half" id="outputDiv">
+        <span class="w3-small w3-text-lightgray w3-button w3-hover-white" id="outputTitle">Output</span>
+        <span class=" w3-right w3-small w3-text-lightgray w3-button w3-hover-orange w3-opacity w3-round-xlarge" onclick="ShareOutput()">Save/Share</span>
+        <iframe name="printf" class="w3-border w3-round-large w3-block" style="height:400px;resize:auto;" id="output"></iframe>
+      </div>
 
-</div></div>
+  </div>
+</div>
 
-<script>
-
-  function RunJS() {
-    var doc = document.getElementById('output').contentWindow.document;
-    doc.open();
-    doc.write(document.getElementById('htmldata').value);
-    doc.close();
-    document.getElementById('outputTitle').innerHTML="Output: <b>"+doc.title+"</b>";
-  }
-
-  function DownloadCode() {
-    var element = document.createElement('a');
-    var text = document.getElementById('htmldata').value;
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    filename = prompt("Enter File Name","index.html");
-    if(filename!=null){
-    element.setAttribute('download',filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  }
-  }
-
-
-function DarkMode(){
-  document.getElementById('footer').classList.toggle('darkBar');
-  document.getElementById('htmldata').classList.toggle('darkInput');
-  document.getElementById('output').classList.toggle('darkOutput');
-  document.body.classList.toggle('dark');
-}
-
-function copyText(but) {
-  var copyText = document.getElementById("htmldata");
-  copyText.select();
-  but.innerText="Copied!"
-  but.style.color='green'
-  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-  document.execCommand("copy");
-  setTimeout(function(){ but.style.color='black';
-but.innerText="Copy Text" }, 3000);
-}
-
-function LoadCode(){
-    document.getElementById('htmldata').value=
-`<!DOCTYPE html>
-<html>
-  <head>
-    <title>Your Title</title>
-    <style>
-      //Your Styles Here
-    </style>
-  </head>
-<body>
-  <h1>Hello World</h1>
-</body>
-</html>`;
-}
-
-
-
-function ShareOutput(){
-  alert("Select 'Save as PDF' download Output")
-  document.getElementById('output').contentWindow.print()
-}
-
-function ShowDropper(mode,ele) {
-  if(mode==1){
-    ele.style.background="black";
-    ele.outerHTML+=`<span id="dimcode" class="w3-display-middle">Drop File Here</span>`;
-    console.log("entered");
-  }else{
-    ele.style.background="white";
-    document.getElementById('dimcode').outerHTML=""
-    console.log("exited");
-  }
-}
-
-window.onbeforeunload = function(event) {
-    event.returnValue = "Your current file will be Lost on Reload, Continue?";
-};
-window.onload = function(){
-  LoadCode();
-  RunJS();
-}
-</script>
-
+<script src="https://www.w3schools.com/lib/w3codecolor.js"></script>
+<script src="js/playground-rw.js"></script>
 
 <footer class="w3-container w3-small w3-center w3-opacity" id="footer">
-  <p>Styled by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-round-large w3-small w3-button w3-green">w3.css</a> and Powered by <button class="w3-button w3-small w3-orange w3-round-large" name="button">RW-Dev</button> </p>
+  <p>Styled by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-round-large w3-small w3-button w3-green">w3.css</a> and Powered by <a href="../" class="w3-button w3-small w3-orange w3-round-large" name="button">RW-Dev</a> </p>
 </footer>
-
 </body>
 </html>
