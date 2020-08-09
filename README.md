@@ -1,4 +1,4 @@
-# JavaScript | HTML | CSS Environment
+# JS | HTML | CSS Environment
 
 A HTML | JavaScript| CSS Environment  - much similar to TryItEditor from W3 Schools
 
@@ -16,4 +16,5 @@ A HTML | JavaScript| CSS Environment  - much similar to TryItEditor from W3 Scho
 
 ### Demo
 <hr>
-[Demo - JS Env - Github.io](https://elvistony.github.io/js-env/)
+
+[Demo - JS Env - Github.io](https://elvistony.github.io/js-env/ "HTML | CSS | JavaScript Enviroment")
