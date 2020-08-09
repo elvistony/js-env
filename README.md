@@ -16,4 +16,4 @@ A HTML | JavaScript| CSS Environment  - much similar to TryItEditor from W3 Scho
 
 ### Demo
 <hr>
-[](https://elvistony.github.io/js-env/)
+[Demo - JS Env - Github.io](https://elvistony.github.io/js-env/)
